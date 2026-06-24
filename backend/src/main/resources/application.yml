@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: repo-analyzer
+  datasource:
+    # Notice the "jdbc:" prefix, and we removed the username/password from the string
+    url: jdbc:postgresql://db.qjtghfgbgfbkbllbqqml.supabase.co:5432/postgres
+    username: postgres
+    password: REMOVED
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # Crucial for your first run so it builds the tables!
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+      
+application:
+  security:
+    jwt:
+      secret-key: REMOVED
+      expiration: 86400000 # 24 hours in milliseconds
+  ai:
+    gemini:
+      #api-key: "REMOVED"
+      api-key: "REMOVED"
+      url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+
+server:
+  port: 8080
