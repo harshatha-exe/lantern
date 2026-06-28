@@ -23,7 +23,7 @@ public class GroqChatService {
     }
 
     public String askCodebase(UUID repoId, String userQuestion) {
-        String queryVector = ragService.getLocalEmbedding(userQuestion);
+        String queryVector = ragService.getSingleEmbeddingFromHuggingFace(userQuestion);
 
         List<RepoChunkRepository.ChunkSearchResult> matches = 
                 chunkRepository.searchSimilarChunks(repoId, queryVector, 0.3, 4);

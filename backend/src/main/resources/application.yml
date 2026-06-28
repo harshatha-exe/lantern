@@ -37,6 +37,11 @@ groq:
     url: https://api.groq.com/openai/v1/chat/completions
     key: "REMOVED"
     # key: ${GROQ_API_KEY}
-
+huggingface:
+  api:
+    key: REMOVED
+jina:
+  api:
+    key: "REMOVED"
 server:
   port: 8080
