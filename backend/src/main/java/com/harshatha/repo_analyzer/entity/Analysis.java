@@ -2,7 +2,7 @@ package com.harshatha.repo_analyzer.entity;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.ZonedDateTime;
 import java.util.UUID;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,7 +24,9 @@ public class Analysis {
     // This creates the 1-to-1 relationship and the foreign key
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repository_id", referencedColumnName = "id", nullable = false, unique = true)
+    @JsonIgnore
     private RepositoryRecord repositoryRecord;
+
 
     @Column(columnDefinition = "TEXT")
     private String summary;

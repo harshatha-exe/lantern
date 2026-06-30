@@ -9,10 +9,11 @@ export const repositoriesApi = {
   async uploadZip(file: File): Promise<Repository> {
     const formData = new FormData();
     formData.append("file", file);
+    
+    // REMOVE the 'headers' object entirely
     const { data } = await apiClient.post<Repository>(
       "/api/v1/repositories/upload-zip",
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } },
+      formData
     );
     return data;
   },
@@ -28,8 +29,11 @@ export const repositoriesApi = {
     return data;
   },
 
-  // TODO(backend): No endpoint yet to list all repositories for the current user.
-  // Expected: GET /api/v1/repositories  ->  Repository[]
+  async getAll(): Promise<Repository[]> {
+    const { data } = await apiClient.get<Repository[]>("/api/v1/repositories");
+    return data;
+  },
+
   async list(): Promise<Repository[] | null> {
     return null;
   },

@@ -23,6 +23,9 @@ apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = getStoredToken();
   if (token) {
     config.headers.set("Authorization", `Bearer ${token}`);
+    console.log("Attached Authorization Header:", config.headers.get("Authorization"));
+  } else {
+    console.warn("No token found in localStorage!");
   }
   return config;
 });
