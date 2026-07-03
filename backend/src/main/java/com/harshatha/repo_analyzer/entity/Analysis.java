@@ -1,8 +1,11 @@
 package com.harshatha.repo_analyzer.entity;
-import org.hibernate.annotations.CreationTimestamp;
 import java.time.ZonedDateTime;
 import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,7 +24,6 @@ public class Analysis {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    // This creates the 1-to-1 relationship and the foreign key
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repository_id", referencedColumnName = "id", nullable = false, unique = true)
     @JsonIgnore
@@ -32,17 +34,17 @@ public class Analysis {
     private String summary;
 
     @Column(columnDefinition = "TEXT")
-    private String techStack; // We will store the JSON here
+    private String techStack; 
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private ZonedDateTime createdAt;
 
     @Column(columnDefinition = "TEXT")
-    private String architecturePattern; // e.g., "MVC", "Microservices", "Layered"
+    private String architecturePattern;  
 
     @Column(columnDefinition = "TEXT")
-    private String projectStructure; // The actual folder tree map
+    private String projectStructure; 
 
     @Column(columnDefinition = "TEXT")
     private String generatedReadme;

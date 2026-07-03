@@ -43,5 +43,6 @@ huggingface:
 jina:
   api:
     key: "REMOVED"
+    #key: "REMOVED" #new
 server:
   port: 8080

@@ -27,13 +27,14 @@ export const Route = createFileRoute("/")({
 });
 
 const features = [
+  { id: "techstack", icon: Code2, title: "Tech Stack", desc: "Languages and frameworks used in the project." },
+  { id: "summary", icon: Code2, title: "Repo Summary", desc: "Concise, contextual summary for the entire repository." },
   { id: "structure", icon: Layers, title: "Project Structure", desc: "Visualize the layout of every folder and file in a clear, navigable tree." },
   { id: "readme", icon: FileText, title: "README Generator", desc: "Generate a polished README from your codebase in seconds." },
   { id: "architecture", icon: GitBranch, title: "Architecture Summary", desc: "Understand modules, layers, and how they interact at a glance." },
-  { id: "summary", icon: Code2, title: "Code Summary", desc: "Concise, contextual summaries for every important file." },
-  { id: "deps", icon: Zap, title: "Dependency Analysis", desc: "See what's installed, what's used, and what can be removed." },
-  { id: "security", icon: ShieldCheck, title: "Security Analysis", desc: "Spot risky patterns and known vulnerabilities early." },
   { id: "chat", icon: MessageSquare, title: "Chat with your Repo", desc: "Ask natural-language questions about any part of the codebase." },
+  { id: "interviewquestions", icon: Zap, title: "Interview Questions", desc: "Generate potential interview questions based on the codebase." },
+  { id: "resumebullets", icon: ShieldCheck, title: "Resume Bullet Points", desc: "Generate resume bullet points based on the codebase." },
 ];
 
 function Landing() {

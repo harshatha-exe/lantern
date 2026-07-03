@@ -35,6 +35,10 @@ public interface RepoChunkRepository extends JpaRepository<RepoChunk, UUID> {
         @Param("limit") int limit
     );
 
+    @Modifying
+    @Transactional
+    void deleteByRepositoryId(UUID repositoryId);
+
     interface ChunkSearchResult {
         String getFilePath();
         String getContent();

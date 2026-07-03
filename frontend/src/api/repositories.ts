@@ -10,10 +10,14 @@ export const repositoriesApi = {
     const formData = new FormData();
     formData.append("file", file);
     
-    // REMOVE the 'headers' object entirely
     const { data } = await apiClient.post<Repository>(
       "/api/v1/repositories/upload-zip",
-      formData
+      formData,
+      {
+        headers: { 
+          "Content-Type": "multipart/form-data" 
+        } 
+      }
     );
     return data;
   },
@@ -24,7 +28,7 @@ export const repositoriesApi = {
   async chat(id: string, message: string): Promise<Record<string, unknown>> {
     const { data } = await apiClient.post<Record<string, unknown>>(
       `/api/v1/repositories/${id}/chat`,
-      { message },
+      { question: message },
     );
     return data;
   },
@@ -35,13 +39,11 @@ export const repositoriesApi = {
   },
 
   async list(): Promise<Repository[] | null> {
-    return null;
+    return this.getAll();
   },
 
-  // TODO(backend): No endpoint yet to delete a repository.
-  // Expected: DELETE /api/v1/repositories/{id}
-  async remove(_id: string): Promise<void> {
-    throw new Error("Delete endpoint not implemented on backend yet.");
+  async remove(id: string): Promise<void> {
+    await apiClient.delete(`/api/v1/repositories/${id}`);
   },
 
   // TODO(backend): No endpoint yet to fetch individual generated artifacts (e.g. README, architecture summary).

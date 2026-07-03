@@ -27,7 +27,7 @@ function Dashboard() {
   const { user } = useAuth();
   const [uploadOpen, setUploadOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [repos, setRepos] = useState<Repository[] | null>(null);
+  const [repos, setRepos] = useState<Repository[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [toDelete, setToDelete] = useState<string | null>(null);
@@ -36,8 +36,7 @@ function Dashboard() {
     let mounted = true;
     (async () => {
       try {
-        const list = await repositoriesApi.list();
-        // TODO(backend): list endpoint not yet available — `list()` currently returns null.
+        const list = await repositoriesApi.getAll();
         if (mounted) setRepos(list);
       } catch (err) {
         if (mounted) setError(extractErrorMessage(err));
@@ -49,16 +48,15 @@ function Dashboard() {
   }, []);
 
   const filtered = useMemo(() => {
-    if (!repos) return [];
     const q = query.trim().toLowerCase();
     const sorted = [...repos].sort((a, b) => {
-      const da = new Date(a.lastOpenedAt ?? a.uploadedAt ?? a.createdAt ?? 0).getTime();
-      const db = new Date(b.lastOpenedAt ?? b.uploadedAt ?? b.createdAt ?? 0).getTime();
+      const da = new Date(a.createdAt ?? 0).getTime();
+      const db = new Date(b.createdAt ?? 0).getTime();
       return db - da;
     });
     if (!q) return sorted;
     return sorted.filter((r) =>
-      (r.name ?? r.githubUrl ?? r.id).toLowerCase().includes(q),
+      (r.githubUrl ?? r.id).toLowerCase().includes(q),
     );
   }, [repos, query]);
 
@@ -113,12 +111,6 @@ function Dashboard() {
           </div>
         ) : error ? (
           <EmptyState title="Could not load repositories" description={error} />
-        ) : repos === null ? (
-          <EmptyState
-            title="Repository list endpoint not available"
-            description="The backend does not yet expose GET /api/v1/repositories. Upload one to start — once submitted you'll be navigated directly to its page."
-            cta={<Button onClick={() => setUploadOpen(true)}><Plus className="h-4 w-4" /> Upload repository</Button>}
-          />
         ) : filtered.length === 0 ? (
           <EmptyState
             title={query ? "No matches" : "No repositories yet"}

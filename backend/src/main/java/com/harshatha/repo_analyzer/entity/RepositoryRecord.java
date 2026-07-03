@@ -3,6 +3,8 @@ package com.harshatha.repo_analyzer.entity;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,21 +25,19 @@ public class RepositoryRecord {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    // DELETED the raw UUID userId field!
-
     @Column(name = "github_url", nullable = false, length = 512)
     private String githubUrl;
 
     @Column(nullable = false, length = 50)
-    private String status = "PENDING"; // PENDING, CLONING, ANALYZING, COMPLETED, FAILED
+    private String status = "PENDING"; 
 
+    @CreationTimestamp
     @Column(name = "created_at", insertable = false, updatable = false)
     private ZonedDateTime createdAt;
     
     @OneToOne(mappedBy = "repositoryRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Analysis analysis;
 
-    // This is the ONLY mapping to the user_id column now
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -52,8 +52,6 @@ public class RepositoryRecord {
  
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
-
-    // DELETED getUserId() and setUserId()
 
     public String getGithubUrl() { return githubUrl; }
     public void setGithubUrl(String githubUrl) { this.githubUrl = githubUrl; }

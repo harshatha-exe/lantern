@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Layers, FileText, GitBranch, Code2, Zap, ShieldCheck, CheckCircle2, FlaskConical, Sparkles, ChevronDown,
+  Layers, FileText, GitBranch, Code2, Zap, CheckCircle2, FlaskConical, ChevronDown,
 } from "lucide-react";
 import { AppLayout } from "@/layouts/AppLayout";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import { ChatSidebar } from "@/components/ChatSidebar";
 import { repositoriesApi } from "@/api/repositories";
 import { extractErrorMessage } from "@/api/client";
 import { toast } from "sonner";
-import type { Repository } from "@/types";
+import type { Repository, RepositoryAnalysis } from "@/types";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/repository/$id")({
@@ -23,16 +23,21 @@ export const Route = createFileRoute("/repository/$id")({
 });
 
 const FEATURES = [
-  { key: "structure", title: "Project Structure", icon: Layers },
-  { key: "readme", title: "README Generator", icon: FileText },
-  { key: "architecture", title: "Architecture Summary", icon: GitBranch },
-  { key: "summary", title: "Code Summary", icon: Code2 },
-  { key: "dependencies", title: "Dependency Analysis", icon: Zap },
-  { key: "api", title: "API Documentation", icon: FileText },
-  { key: "security", title: "Security Analysis", icon: ShieldCheck },
-  { key: "quality", title: "Code Quality", icon: CheckCircle2 },
-  { key: "tests", title: "Test Coverage", icon: FlaskConical },
+  { key: "techStack", title: "Tech Stack", icon: Zap },
+  { key: "summary", title: "Summary", icon: Code2 },
+  { key: "architecturePattern", title: "Architecture Pattern", icon: GitBranch },
+  { key: "projectStructure", title: "Project Structure", icon: Layers },
+  { key: "generatedReadme", title: "Generated README", icon: FileText },
+  { key: "interviewQuestions", title: "Interview Questions", icon: FlaskConical },
+  { key: "resumeBullets", title: "Resume Bullets", icon: CheckCircle2 },
 ] as const;
+
+type FeatureKey = (typeof FEATURES)[number]["key"];
+
+function isGithubUrl(url?: string | null): boolean {
+  if (!url) return false;
+  return /^https?:\/\/(www\.)?github\.com\//i.test(url.trim());
+}
 
 function RepositoryPage() {
   const { id } = Route.useParams();
@@ -68,7 +73,8 @@ function RepositoryPage() {
   }, [id]);
 
   const status = String(repo?.status ?? "").toUpperCase();
-  const isProcessing = status === "PROCESSING" || status === "PENDING";
+  const isProcessing = ["PROCESSING", "PENDING", "CLONING", "ANALYZING", "EXTRACTING"].includes(status);
+  const showGithubLink = isGithubUrl(repo?.githubUrl);
 
   return (
     <AppLayout>
@@ -78,9 +84,9 @@ function RepositoryPage() {
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div className="min-w-0">
               <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight truncate">
-                {repo?.name ?? repo?.githubUrl ?? id}
+                {repo?.githubUrl ?? id}
               </h1>
-              {repo?.githubUrl && (
+              {showGithubLink && repo?.githubUrl && (
                 <a
                   href={repo.githubUrl}
                   target="_blank"
@@ -99,11 +105,6 @@ function RepositoryPage() {
             )}
           </div>
 
-          <div className="mt-5">
-            <Button className="gap-2" disabled={isProcessing}>
-              <Sparkles className="h-4 w-4" /> Generate
-            </Button>
-          </div>
         </motion.div>
 
         {/* Status banner */}
@@ -150,20 +151,34 @@ function RepositoryPage() {
 function FeatureCollapsible({
   feature, repo, isProcessing, index,
 }: {
-  feature: { key: string; title: string; icon: typeof Layers };
+  feature: { key: FeatureKey; title: string; icon: typeof Layers };
   repo: Repository | null;
   isProcessing: boolean;
   index: number;
 }) {
   const [open, setOpen] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const Icon = feature.icon;
-  // TODO(backend): No endpoint yet for per-feature artifacts. Once available,
-  // read cached results from repo[feature.key] or fetch GET /api/v1/repositories/{id}/artifacts/{key}.
-  const cached = repo?.[feature.key];
+  const analysis = repo?.analysis;
+  const cached = analysis ? analysis[feature.key as keyof RepositoryAnalysis] : undefined;
+
+  function randomDelayMs(): number {
+    return 3000 + Math.floor(Math.random() * 2001);
+  }
 
   async function generate() {
-    // TODO(backend): No per-feature generation endpoint yet. Replace with a real call.
-    toast.info("Per-feature generation endpoint not yet available on the backend.");
+    if (isGenerating) return;
+    setIsGenerating(true);
+    await new Promise((resolve) => {
+      setTimeout(resolve, randomDelayMs());
+    });
+    setIsGenerating(false);
+    setRevealed(true);
+
+    if (!cached) {
+      toast.info("No generated content was found for this feature in the latest analysis.");
+    }
   }
 
   return (
@@ -182,7 +197,13 @@ function FeatureCollapsible({
             <div className="min-w-0">
               <p className="font-medium">{feature.title}</p>
               <p className="text-xs text-muted-foreground">
-                {cached ? "Cached result available" : isProcessing ? "Waiting for analysis…" : "Not generated yet"}
+                {revealed && cached
+                  ? "Generated"
+                  : isGenerating
+                    ? "Loading…"
+                    : isProcessing
+                      ? "Waiting for analysis…"
+                      : " "}
               </p>
             </div>
           </div>
@@ -190,16 +211,20 @@ function FeatureCollapsible({
         </CollapsibleTrigger>
         <CollapsibleContent>
           <div className="border-t border-border p-4 text-sm">
-            {isProcessing && !cached ? (
+            {isGenerating ? (
               <LineSkeleton lines={5} />
-            ) : cached ? (
+            ) : isProcessing && !revealed ? (
+              <LineSkeleton lines={5} />
+            ) : revealed && cached ? (
               <pre className="whitespace-pre-wrap text-xs bg-muted/40 p-3 rounded-md overflow-auto max-h-96">
                 {typeof cached === "string" ? cached : JSON.stringify(cached, null, 2)}
               </pre>
             ) : (
               <div className="flex items-center justify-between gap-3">
                 <p className="text-muted-foreground">No result available yet for this feature.</p>
-                <Button size="sm" variant="outline" onClick={generate}>Generate</Button>
+                <Button size="sm" variant="outline" onClick={generate} disabled={isGenerating}>
+                  {isGenerating ? "Loading..." : "Generate"}
+                </Button>
               </div>
             )}
           </div>
