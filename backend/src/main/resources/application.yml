@@ -13,13 +13,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        # The crucial batch insert settings we added for pgvector
         order_inserts: true
         jdbc:
           batch_size: 50
   servlet:
     multipart:
-      # The Bouncer: Protects against massive network uploads
       max-file-size: 500KB
       max-request-size: 500KB
 
@@ -33,7 +31,7 @@ application:
   security:
     jwt:
       secret-key: ${JWT_SECRET_KEY} 
-      expiration: 86400000 # 24 hours in milliseconds
+      expiration: 86400000
   ai:
     gemini:
       api-key: ${GEMINI_API_KEY} 
