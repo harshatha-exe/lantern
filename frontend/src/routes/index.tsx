@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "RepoAnalyzer — AI Repository Analyzer" },
+      { title: "Reportoire — AI Repository Analyzer" },
       { name: "description", content: "Analyze any GitHub repo or ZIP archive with AI. Architecture, dependencies, security, docs and more." },
     ],
   }),
@@ -73,7 +73,7 @@ function Landing() {
             <div className="gradient-bg flex h-8 w-8 items-center justify-center rounded-lg">
               <Sparkles className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="font-semibold tracking-tight">RepoAnalyzer</span>
+            <span className="font-semibold tracking-tight">Reportoire</span>
           </a>
           <div className="flex items-center gap-1 sm:gap-2">
             <ThemeToggle />
@@ -104,23 +104,23 @@ function Landing() {
         {/* Main */}
         <main className="flex-1 min-w-0">
           {/* Hero */}
-          <section className="text-center lg:text-left">
+          <section className="text-center">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
               <span className="inline-flex items-center gap-1 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium">
-                <Sparkles className="h-3 w-3 text-primary" /> Powered by AI
+                <Sparkles className="h-3 w-3 text-primary" /> put something catchy here
               </span>
               <h1 className="mt-6 text-5xl sm:text-6xl font-bold tracking-tight">
-                <span className="gradient-text">AI Repo Analyzer</span>
+                <span className="gradient-text">Reportoire</span>
               </h1>
-              <p className="mt-5 max-w-2xl mx-auto lg:mx-0 text-lg text-muted-foreground">
+              <p className="mt-5 max-w-2xl mx-auto text-lg text-muted-foreground">
                 Drop in a GitHub URL or a ZIP file and instantly explore architecture, dependencies,
                 security insights, generated docs — and chat with your codebase.
               </p>
-              <div className="mt-8 flex flex-wrap justify-center lg:justify-start gap-3">
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <Button size="lg" onClick={() => openAuth("register")} className="gap-2">
                   Get started <ArrowRight className="h-4 w-4" />
                 </Button>
@@ -152,7 +152,7 @@ function Landing() {
       {/* Footer */}
       <footer className="border-t border-border mt-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} RepoAnalyzer. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Reportoire. All rights reserved.</p>
           <div className="flex items-center gap-5">
             <button className="hover:text-foreground" onClick={() => scrollTo("structure")}>About</button>
             <a

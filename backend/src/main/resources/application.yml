@@ -2,10 +2,9 @@ spring:
   application:
     name: repo-analyzer
   datasource:
-    url: jdbc:postgresql://db.qjtghfgbgfbkbllbqqml.supabase.co:5432/postgres
-    username: postgres
-    #password: ${DB_PASSWORD}  
-    password: REMOVED
+    url: ${DB_URL}
+    username: ${DB_USERNAME} 
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -23,26 +22,21 @@ spring:
 application:
   security:
     jwt:
-      #secret-key: ${JWT_SECRET_KEY} 
-      secret-key: REMOVED
+      secret-key: ${JWT_SECRET_KEY} 
       expiration: 86400000 # 24 hours in milliseconds
   ai:
     gemini:
-      #api-key: "REMOVED"
-      api-key: "REMOVED"
-      #api-key: ${GEMINI_API_KEY} 
+      api-key: ${GEMINI_API_KEY} 
       url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
 groq:
   api:
     url: https://api.groq.com/openai/v1/chat/completions
-    key: "REMOVED"
-    # key: ${GROQ_API_KEY}
+    key: ${GROQ_API_KEY}
 huggingface:
   api:
     key: REMOVED
 jina:
   api:
-    key: "REMOVED"
-    #key: "REMOVED" #new
+    key: ${JINA_API_KEY}
 server:
   port: 8080

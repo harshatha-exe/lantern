@@ -32,7 +32,7 @@ public class RepositoryRecord {
     private String status = "PENDING"; 
 
     @CreationTimestamp
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @Column(name = "created_at", updatable = false)
     private ZonedDateTime createdAt;
     
     @OneToOne(mappedBy = "repositoryRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

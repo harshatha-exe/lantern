@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/repository/$id")({
   ssr: false,
-  head: () => ({ meta: [{ title: "Repository — RepoAnalyzer" }] }),
+  head: () => ({ meta: [{ title: "Repository — Reportoire" }] }),
   component: RepositoryPage,
 });
 

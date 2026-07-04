@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export const Route = createFileRoute("/settings")({
   ssr: false,
-  head: () => ({ meta: [{ title: "Settings — RepoAnalyzer" }] }),
+  head: () => ({ meta: [{ title: "Settings — Reportoire" }] }),
   component: Settings,
 });
 
