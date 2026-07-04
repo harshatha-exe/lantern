@@ -13,12 +13,22 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+        # The crucial batch insert settings we added for pgvector
+        order_inserts: true
+        jdbc:
+          batch_size: 50
   servlet:
     multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
-      
+      # The Bouncer: Protects against massive network uploads
+      max-file-size: 500KB
+      max-request-size: 500KB
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.orm.jdbc.bind: WARN
+    com.harshatha.repo_analyzer.service: DEBUG
+
 application:
   security:
     jwt:
@@ -28,15 +38,15 @@ application:
     gemini:
       api-key: ${GEMINI_API_KEY} 
       url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+
 groq:
   api:
     url: https://api.groq.com/openai/v1/chat/completions
     key: ${GROQ_API_KEY}
-huggingface:
-  api:
-    key: REMOVED
+
 jina:
   api:
     key: ${JINA_API_KEY}
+
 server:
   port: 8080
