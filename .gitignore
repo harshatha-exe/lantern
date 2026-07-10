@@ -1,21 +1,15 @@
-# SECRETS (NEVER COMMIT THESE)
 .env
 *.env
 application-secret.yml
 
-# Compiled class file
 *.class
 
-# Log file
 *.log
 
-# BlueJ files
 *.ctxt
 
-# Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
 *.jar
 *.war
 *.nar
@@ -24,16 +18,13 @@ application-secret.yml
 *.tar.gz
 *.rar
 
-# virtual machine crash logs
 hs_err_pid*
 
-# Spring Boot target folder
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-# IDE specific files
 .idea/
 *.iml
 .vscode/
@@ -41,6 +32,5 @@ target/
 .project
 .settings/
 
-# OS specific files
 .DS_Store
 Thumbs.db

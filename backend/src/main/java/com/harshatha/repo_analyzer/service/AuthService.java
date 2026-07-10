@@ -38,7 +38,7 @@ public class AuthService {
         // 2. Create new user entity & encrypt password
         User user = new User();
         user.setEmail(request.getEmail());
-        user.setHashPassword(passwordEncoder.encode(request.getPassword())); // Secure hashing
+        user.setHashPassword(passwordEncoder.encode(request.getPassword())); 
 
         userRepository.save(user);
 

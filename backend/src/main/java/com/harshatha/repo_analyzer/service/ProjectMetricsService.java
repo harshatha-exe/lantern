@@ -19,7 +19,6 @@ public class ProjectMetricsService {
         try (Stream<Path> paths = Files.walk(repoPath)) {
             paths.filter(p -> {
                         String pathStr = p.toString();
-                        // Ignore dependencies and hidden Git history to get the TRUE project size
                         return !pathStr.contains(".git") 
                                 && !pathStr.contains("node_modules") 
                                 && !pathStr.contains("target") 
@@ -31,13 +30,12 @@ public class ProjectMetricsService {
                      try {
                          totalSizeBytes.addAndGet(Files.size(file));
                      } catch (Exception e) {
-                         // Silently ignore files that can't be read
                      }
                  });
         } catch (Exception e) {
             System.err.println("Failed to calculate project metrics: " + e.getMessage());
         }
 
-        return new ProjectMetrics(fileCount.get(), totalSizeBytes.get() / 1024); // Convert Bytes to KB
+        return new ProjectMetrics(fileCount.get(), totalSizeBytes.get() / 1024); 
     }
 }

@@ -38,7 +38,7 @@ public class RepositoryController {
     private final RepoChunkRepository repoChunkRepository;
     private final AnalysisOrchestrator analysisOrchestrator;
     private final GitHubValidationService gitHubValidationService; 
-    private final ZipIngestionService zipIngestionService; // Merged
+    private final ZipIngestionService zipIngestionService; 
 
     public RepositoryController(
             RepositoryRecordRepository repositoryRecordRepository,
@@ -46,7 +46,7 @@ public class RepositoryController {
             RepoChunkRepository repoChunkRepository,
             AnalysisOrchestrator analysisOrchestrator,
             GitHubValidationService gitHubValidationService,
-            ZipIngestionService zipIngestionService // Merged
+            ZipIngestionService zipIngestionService 
     ) {
         this.repositoryRecordRepository = repositoryRecordRepository;
         this.analysisRepository = analysisRepository;
@@ -81,7 +81,7 @@ public class RepositoryController {
         ));
     }
 
-    // 2. ZIP File Upload (Merged from RepoUploadController)
+    // 2. ZIP File Upload 
     @PostMapping(value = "/upload-zip", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadZip(
             @RequestParam("file") MultipartFile file,
@@ -91,9 +91,8 @@ public class RepositoryController {
             return ResponseEntity.badRequest().body(Map.of("error", "Please upload a valid .zip file."));
         }
 
-        // The Bouncer: Protect your RAM from massive ZIPs
         if (file.getSize() > 500 * 1024) { 
-            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
+            return ResponseEntity.status(HttpStatus.CONTENT_TOO_LARGE)
                     .body(Map.of("error", "ZIP file exceeds the 500KB limit for the free tier."));
         }
 
@@ -106,7 +105,6 @@ public class RepositoryController {
 
             java.nio.file.Path extractedPath = zipIngestionService.extractZip(file, record.getId().toString());
 
-            // Fire the pipeline with the specific path
             analysisOrchestrator.executeAnalysisPipeline(record, extractedPath);
 
             return ResponseEntity.accepted().body(Map.of(

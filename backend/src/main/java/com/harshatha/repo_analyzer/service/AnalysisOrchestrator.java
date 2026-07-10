@@ -75,7 +75,6 @@ public class AnalysisOrchestrator {
                 repoPath = preExtractedPath; 
             }
             
-            // Extract the real repository name for AI formatting
             String cleanRepoName = extractCleanRepoName(record.getGithubUrl());
             
             // 2. ANALYZING (Tech Stack)
@@ -87,11 +86,9 @@ public class AnalysisOrchestrator {
             com.harshatha.repo_analyzer.dto.ProjectMetrics metrics = projectMetricsService.calculateMetrics(repoPath);
 
             System.out.println("Generating Project Tree for: " + cleanRepoName);
-            // Pass the clean name to format the root of the tree
             String projectTree = aiSummaryService.generateProjectTree(repoPath, cleanRepoName);
 
             System.out.println("Sending data to Gemini AI for Master Analysis (1 API Call)...");
-            // Pass the clean name to inject into the AI prompts
             com.harshatha.repo_analyzer.dto.MasterAiResponse masterResponse = 
                     aiSummaryService.generateMasterAnalysis(detectedStack, projectTree, cleanRepoName);
 

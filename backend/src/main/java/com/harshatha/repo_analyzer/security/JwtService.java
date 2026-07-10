@@ -17,7 +17,6 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    // Injected from application.yml. Must be at least 256 bits (32 characters).
     @Value("${application.security.jwt.secret-key}")
     private String secretKey; 
 

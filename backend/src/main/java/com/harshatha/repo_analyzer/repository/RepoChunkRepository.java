@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface RepoChunkRepository extends JpaRepository<RepoChunk, UUID> {
 
-    // ---> ADD THIS NEW CUSTOM INSERT METHOD <---
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO repo_chunks (id, repository_id, file_path, content, embedding) " +

@@ -15,7 +15,7 @@ public class GitHubValidationService {
 
     public void validateRepositorySize(String githubUrl) {
         try {
-            // 1. Extract owner and repo from URL (e.g., https://github.com/facebook/react)
+            // 1. Extract owner and repo name from URL 
             String cleanUrl = githubUrl.replace("https://github.com/", "").replace(".git", "");
             String[] parts = cleanUrl.split("/");
             
@@ -26,7 +26,7 @@ public class GitHubValidationService {
             String owner = parts[0];
             String repo = parts[1];
 
-            // 2. Call GitHub API (No auth required for public repos)
+            // 2. Call GitHub API 
             String apiUrl = "https://api.github.com/repos/" + owner + "/" + repo;
             
             String responseString = restClient.get()
@@ -36,7 +36,7 @@ public class GitHubValidationService {
 
             JsonNode root = objectMapper.readTree(responseString);
             
-            // 3. GitHub API returns size in Kilobytes (KB)
+            // 3. GitHub API returns size in kb
             int sizeInKb = root.get("size").asInt();
 
             System.out.println("Validating Repo: " + owner + "/" + repo + " | Size: " + sizeInKb + "KB");
@@ -50,7 +50,7 @@ public class GitHubValidationService {
             }
 
         } catch (ResponseStatusException e) {
-            throw e; // Re-throw our custom exception
+            throw e; 
         } catch (Exception e) {
             System.err.println("Failed to fetch GitHub repo size: " + e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not validate repository size. Make sure it is public.");

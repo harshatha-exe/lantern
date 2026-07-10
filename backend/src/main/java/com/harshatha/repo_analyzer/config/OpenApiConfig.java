@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         info = @Info(title = "Repo Analyzer API", version = "1.0"),
-        security = @SecurityRequirement(name = "bearerAuth") // Automatically applies the token to all endpoints
+        security = @SecurityRequirement(name = "bearerAuth") 
 )
 @SecurityScheme(
         name = "bearerAuth",

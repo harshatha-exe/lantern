@@ -28,7 +28,6 @@ function Profile() {
             <p className="text-sm text-muted-foreground">Signed in</p>
           </div>
         </div>
-        {/* TODO(backend): No /api/v1/users/me endpoint yet. Show only what we know from the JWT. */}
         <p className="text-xs text-muted-foreground">
           More profile details will appear here once the backend exposes a user endpoint.
         </p>

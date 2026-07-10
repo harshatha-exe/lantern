@@ -45,7 +45,4 @@ export const repositoriesApi = {
   async remove(id: string): Promise<void> {
     await apiClient.delete(`/api/v1/repositories/${id}`);
   },
-
-  // TODO(backend): No endpoint yet to fetch individual generated artifacts (e.g. README, architecture summary).
-  // Expected: GET /api/v1/repositories/{id}/artifacts/{type}
 };

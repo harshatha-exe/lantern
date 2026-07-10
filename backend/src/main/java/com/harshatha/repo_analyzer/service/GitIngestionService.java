@@ -16,8 +16,6 @@ public class GitIngestionService {
 
             System.out.println("Starting clone for " + githubUrl + " into " + directory.getAbsolutePath());
 
-            // THE FIX: Wrap the JGit call in a try-with-resources block
-            // This guarantees JGit releases the Windows file lock instantly after cloning!
             try (Git git = Git.cloneRepository()
                     .setURI(githubUrl)
                     .setDirectory(directory)

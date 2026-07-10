@@ -40,7 +40,6 @@ public class AiSummaryService {
             .limit(100) 
             .forEach(p -> {
                 if (p.equals(repoPath)) {
-                    // Force the root folder to use the real repository name, not the UUID
                     tree.append("📁 ").append(cleanRepoName).append("\n");
                 } else {
                     int depth = repoPath.relativize(p).getNameCount();

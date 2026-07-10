@@ -26,21 +26,19 @@ public class User implements UserDetails {
     @Column(name = "created_at", insertable = false, updatable = false)
     private ZonedDateTime createdAt;
 
-    // --- UserDetails Interface Methods ---
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(); // Empty for now; add roles later if needed
+        return List.of(); 
     }
 
     @Override
     public String getPassword() {
-        return passwordHash; // Spring Security needs this to verify hashes
+        return passwordHash; 
     }
 
     @Override
     public String getUsername() {
-        return email; // We use email as the primary identifier
+        return email; 
     }
 
     @Override
@@ -65,7 +63,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    // Notice standard naming: field is passwordHash -> setter is setPasswordHash
     public void setHashPassword(String passwordHash) {
         this.passwordHash = passwordHash;
     }

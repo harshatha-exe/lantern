@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.harshatha.repo_analyzer.entity.RepositoryRecord;
 
 public interface RepositoryRecordRepository extends JpaRepository<RepositoryRecord, UUID> {
-    // Allows us to fetch all repositories submitted by a specific user
     List<RepositoryRecord> findAllByUserId(UUID userId);
 }

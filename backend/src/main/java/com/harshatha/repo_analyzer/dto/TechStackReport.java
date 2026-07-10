@@ -9,7 +9,6 @@ public record TechStackReport(
         Set<String> databases,
         Set<String> tools
 ) {
-    // A convenient static factory method to initialize empty sets
     public static TechStackReport createEmpty() {
         return new TechStackReport(new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
