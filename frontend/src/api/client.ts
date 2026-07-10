@@ -1,6 +1,6 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 
-export const API_BASE_URL = "http://localhost:8080";
+export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 export const TOKEN_STORAGE_KEY = "repoanalyzer.token";
 
 export const apiClient = axios.create({
