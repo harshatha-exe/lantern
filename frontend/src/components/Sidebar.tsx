@@ -18,11 +18,11 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const { logout } = useAuth();
   return (
     <nav className="flex h-full flex-col gap-1 p-3">
-      <Link to="/dashboard" className="flex items-center gap-2 px-3 py-4" onClick={onNavigate}>
+      <Link to="/" className="flex items-center gap-2 px-3 py-4" onClick={onNavigate}>
         <div className="gradient-bg flex h-8 w-8 items-center justify-center rounded-lg">
           <Sparkles className="h-4 w-4 text-primary-foreground" />
         </div>
-        <span className="font-semibold tracking-tight">Reportoire</span>
+        <span className="font-semibold tracking-tight">Lantern</span>
       </Link>
       <div className="mt-2 flex-1 space-y-1">
         {items.map((item) => {

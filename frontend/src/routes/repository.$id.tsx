@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Layers, FileText, GitBranch, Code2, Zap, CheckCircle2, FlaskConical, ChevronDown,
+  Layers, FileText, GitBranch, Code2, Zap, CheckCircle2, FlaskConical, ChevronDown, Copy, Check
 } from "lucide-react";
 import { AppLayout } from "@/layouts/AppLayout";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/repository/$id")({
   ssr: false,
-  head: () => ({ meta: [{ title: "Repository — Reportoire" }] }),
+  head: () => ({ meta: [{ title: "Repository — Lantern" }] }),
   component: RepositoryPage,
 });
 
@@ -28,6 +28,7 @@ const FEATURES = [
   { key: "architecturePattern", title: "Architecture Pattern", icon: GitBranch },
   { key: "projectStructure", title: "Project Structure", icon: Layers },
   { key: "generatedReadme", title: "Generated README", icon: FileText },
+  { key: "metrics", title: "Repository Metrics", icon: CheckCircle2 },
   { key: "interviewQuestions", title: "Interview Questions", icon: FlaskConical },
   { key: "resumeBullets", title: "Resume Bullets", icon: CheckCircle2 },
 ] as const;
@@ -56,7 +57,7 @@ function RepositoryPage() {
         setRepo(data);
         setLoading(false);
         const status = String(data.status ?? "").toUpperCase();
-        if (status === "PROCESSING" || status === "PENDING") {
+        if (["PROCESSING", "PENDING", "CLONING", "ANALYZING", "EXTRACTING"].includes(status)) {
           timer = setTimeout(poll, 3000);
         }
       } catch (err) {
@@ -104,7 +105,6 @@ function RepositoryPage() {
               </Badge>
             )}
           </div>
-
         </motion.div>
 
         {/* Status banner */}
@@ -116,7 +116,15 @@ function RepositoryPage() {
 
         {error && (
           <div className="surface-card mt-6 p-5 border-destructive/40">
-            <p className="text-sm text-destructive">{error}</p>
+            <p className="text-sm text-destructive font-medium mb-1">Analysis Failed</p>
+            <p className="text-sm text-muted-foreground">{error}</p>
+            {error.toLowerCase().includes("size") && (
+              <div className="mt-3 text-sm text-muted-foreground bg-muted/30 p-3 rounded-md border border-border">
+                <span className="font-semibold text-foreground">Pro Tip: </span> 
+                If you are analyzing a large full-stack repository, try analyzing it in pieces. 
+                Download just the <code>frontend</code> or <code>backend</code> folder as a ZIP file and upload it directly.
+              </div>
+            )}
           </div>
         )}
 
@@ -159,9 +167,18 @@ function FeatureCollapsible({
   const [open, setOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  const [copied, setCopied] = useState(false);
+  
   const Icon = feature.icon;
   const analysis = repo?.analysis;
   const cached = analysis ? analysis[feature.key as keyof RepositoryAnalysis] : undefined;
+  
+  const metricsContent = analysis
+    ? [
+        { label: "Files", value: analysis.totalFiles ?? "—" },
+        { label: "Size", value: analysis.totalSizeKb != null ? `${analysis.totalSizeKb} KB` : "—" },
+      ]
+    : [];
 
   function randomDelayMs(): number {
     return 3000 + Math.floor(Math.random() * 2001);
@@ -181,6 +198,19 @@ function FeatureCollapsible({
     }
   }
 
+  const handleCopy = async () => {
+    if (!cached) return;
+    const textToCopy = typeof cached === "string" ? cached : JSON.stringify(cached, null, 2);
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      setCopied(true);
+      toast.success("Copied to clipboard");
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      toast.error("Failed to copy content");
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
@@ -197,7 +227,9 @@ function FeatureCollapsible({
             <div className="min-w-0">
               <p className="font-medium">{feature.title}</p>
               <p className="text-xs text-muted-foreground">
-                {revealed && cached
+                {feature.key === "metrics"
+                  ? " "
+                  : revealed && cached
                   ? "Generated"
                   : isGenerating
                     ? "Loading…"
@@ -211,14 +243,38 @@ function FeatureCollapsible({
         </CollapsibleTrigger>
         <CollapsibleContent>
           <div className="border-t border-border p-4 text-sm">
-            {isGenerating ? (
+            {feature.key === "metrics" ? (
+              <div className="grid grid-cols-2 gap-3">
+                {metricsContent.map((item) => (
+                  <div key={item.label} className="rounded-lg border border-border bg-muted/30 p-3">
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground">{item.label}</p>
+                    <p className="mt-1 text-lg font-semibold">{item.value}</p>
+                  </div>
+                ))}
+              </div>
+            ) : isGenerating ? (
               <LineSkeleton lines={5} />
             ) : isProcessing && !revealed ? (
               <LineSkeleton lines={5} />
             ) : revealed && cached ? (
-              <pre className="whitespace-pre-wrap text-xs bg-muted/40 p-3 rounded-md overflow-auto max-h-96">
-                {typeof cached === "string" ? cached : JSON.stringify(cached, null, 2)}
-              </pre>
+              <div className="relative group bg-muted/40 rounded-md border border-border">
+  <pre className="whitespace-pre-wrap text-xs p-4 pr-12 overflow-auto max-h-96">
+                  {typeof cached === "string" ? cached : JSON.stringify(cached, null, 2)}
+                </pre>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={handleCopy}
+                  className="absolute top-2 right-6 h-7 w-7  bg-background/50 hover:bg-background shadow-sm"
+                  title="Copy content"
+                >
+                  {copied ? (
+                    <Check className="h-3.5 w-3.5 text-green-500" />
+                  ) : (
+                    <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                  )}
+                </Button>
+              </div>
             ) : (
               <div className="flex items-center justify-between gap-3">
                 <p className="text-muted-foreground">No result available yet for this feature.</p>

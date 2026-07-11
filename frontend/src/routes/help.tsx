@@ -12,7 +12,7 @@ const faqs = [
 
 export const Route = createFileRoute("/help")({
   ssr: false,
-  head: () => ({ meta: [{ title: "Help & FAQ — Reportoire" }] }),
+  head: () => ({ meta: [{ title: "Help & FAQ — Lantern" }] }),
   component: Help,
 });
 

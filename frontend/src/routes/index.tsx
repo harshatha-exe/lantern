@@ -9,8 +9,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AuthDialog } from "@/components/AuthDialog";
-import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 
 const searchSchema = z.object({ auth: z.enum(["login", "register"]).optional() });
@@ -19,7 +17,7 @@ export const Route = createFileRoute("/")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "Reportoire — AI Repository Analyzer" },
+      { title: "Lantern — AI Repository Analyzer" },
       { name: "description", content: "Analyze any GitHub repo or ZIP archive with AI. Architecture, dependencies, security, docs and more." },
     ],
   }),
@@ -38,8 +36,6 @@ const features = [
 ];
 
 function Landing() {
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
   const search = Route.useSearch();
   const [authOpen, setAuthOpen] = useState(false);
   const [mode, setMode] = useState<"login" | "register">("login");
@@ -50,10 +46,6 @@ function Landing() {
       setAuthOpen(true);
     }
   }, [search.auth]);
-
-  useEffect(() => {
-    if (isAuthenticated) navigate({ to: "/dashboard" });
-  }, [isAuthenticated, navigate]);
 
   function openAuth(m: "login" | "register") {
     setMode(m);
@@ -69,11 +61,11 @@ function Landing() {
       {/* Header */}
       <header className="sticky top-0 z-30 border-b border-border/60 bg-background/80 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <a href="#" className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-2">
             <div className="gradient-bg flex h-8 w-8 items-center justify-center rounded-lg">
               <Sparkles className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="font-semibold tracking-tight">Reportoire</span>
+            <span className="font-semibold tracking-tight">Lantern</span>
           </a>
           <div className="flex items-center gap-1 sm:gap-2">
             <ThemeToggle />
@@ -114,7 +106,7 @@ function Landing() {
                 <Sparkles className="h-3 w-3 text-primary" /> put something catchy here
               </span>
               <h1 className="mt-6 text-5xl sm:text-6xl font-bold tracking-tight">
-                <span className="gradient-text">Reportoire</span>
+                <span className="gradient-text">Lantern</span>
               </h1>
               <p className="mt-5 max-w-2xl mx-auto text-lg text-muted-foreground">
                 Drop in a GitHub URL or a ZIP file and instantly explore architecture, dependencies,
@@ -131,38 +123,53 @@ function Landing() {
             </motion.div>
           </section>
 
-          {/* Feature overview */}
-          <section className="mt-20 grid sm:grid-cols-2 gap-4">
-            {features.slice(0, 4).map((f, i) => (
-              <FeatureTile key={f.id} feature={f} delay={i * 0.05} compact />
-            ))}
-          </section>
-
           {/* Per-feature sections */}
+          <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
           <div className="mt-24 space-y-16">
+            <div className="text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                Refined capabilities
+              </p>
+              <h2 className="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight">
+                A focused suite of intelligent repository insights
+              </h2>
+            </div>
             {features.map((f) => (
               <section key={f.id} id={f.id} className="scroll-mt-24">
                 <FeatureTile feature={f} />
               </section>
             ))}
           </div>
+            </motion.div>
         </main>
       </div>
 
       {/* Footer */}
       <footer className="border-t border-border mt-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Reportoire. All rights reserved.</p>
-          <div className="flex items-center gap-5">
-            <button className="hover:text-foreground" onClick={() => scrollTo("structure")}>About</button>
-            <a
-              href="#"
-              className="inline-flex items-center gap-1 hover:text-foreground"
-              onClick={(e) => e.preventDefault()}
-              title="GitHub link unavailable"
-            >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 flex flex-col gap-6 text-sm text-muted-foreground">
+          <p>© {new Date().getFullYear()} Lantern. All rights reserved.</p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <button className="hover:text-foreground" onClick={() => scrollTo("structure")}>Features</button>
+            <a href="/dashboard" className="hover:text-foreground">Dashboard</a>
+            <a href="/help" className="hover:text-foreground">Help & FAQs</a>
+            <a href="/profile" className="hover:text-foreground">Profile</a>
+            <a href="/settings" className="hover:text-foreground">Settings</a>
+            <a href="/" className="hover:text-foreground">
+              Home
+            </a>
+            <a href="https://github.com/harshatha-exe/lantern" className="inline-flex items-center gap-1 hover:text-foreground" target="_blank" rel="noreferrer">
               <Github className="h-4 w-4" /> GitHub
             </a>
+            <Button variant="ghost" size="sm" className="h-auto p-0 text-sm text-muted-foreground hover:text-foreground" onClick={() => openAuth("login")}>
+              Login
+            </Button>
+            <Button variant="ghost" size="sm" className="h-auto p-0 text-sm text-muted-foreground hover:text-foreground" onClick={() => openAuth("register")}>
+              Sign up
+            </Button>
           </div>
         </div>
       </footer>

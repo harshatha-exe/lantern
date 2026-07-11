@@ -71,9 +71,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Reportoire — AI Repository Analyzer" },
+      { title: "Lantern — AI Repository Analyzer" },
       { name: "description", content: "Analyze, summarize, and chat with any code repository using AI." },
-      { property: "og:title", content: "Reportoire — AI Repository Analyzer" },
+      { property: "og:title", content: "Lantern — AI Repository Analyzer" },
       { property: "og:description", content: "Analyze, summarize, and chat with any code repository using AI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

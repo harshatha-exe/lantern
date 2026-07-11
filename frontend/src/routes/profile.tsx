@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export const Route = createFileRoute("/profile")({
   ssr: false,
-  head: () => ({ meta: [{ title: "Profile — Reportoire" }] }),
+  head: () => ({ meta: [{ title: "Profile — Lantern" }] }),
   component: Profile,
 });
 

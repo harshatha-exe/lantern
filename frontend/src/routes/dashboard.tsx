@@ -19,7 +19,7 @@ import type { Repository } from "@/types";
 
 export const Route = createFileRoute("/dashboard")({
   ssr: false,
-  head: () => ({ meta: [{ title: "Dashboard — Reportoire" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — Lantern" }] }),
   component: Dashboard,
 });
 
