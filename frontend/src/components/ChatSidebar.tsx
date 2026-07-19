@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, Send, X, Copy, Loader2 } from "lucide-react";
+import { Send, X, Copy, Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -12,6 +12,7 @@ import { extractErrorMessage } from "@/api/client";
 import { toast } from "sonner";
 import type { ChatMessage } from "@/types";
 import { cn } from "@/lib/utils";
+import icon from "./icon.gif";
 
 interface Props {
   repositoryId: string;
@@ -69,7 +70,7 @@ export function ChatSidebar({ repositoryId }: Props) {
           className="h-14 w-14 rounded-full shadow-glow gradient-bg"
           aria-label="Chat with repository"
         >
-          {open ? <X className="h-6 w-6" /> : <MessageSquare className="h-6 w-6" />}
+          {open ? <X className="h-14 w-14" /> : <img src={icon} alt="" className="h-14 w-14" />}
         </Button>
       </motion.div>
 
@@ -82,15 +83,27 @@ export function ChatSidebar({ repositoryId }: Props) {
             transition={{ type: "spring", damping: 26, stiffness: 220 }}
             className="fixed inset-y-0 right-0 z-40 flex w-full sm:w-[420px] flex-col border-l border-border bg-surface shadow-2xl"
           >
-            <header className="flex items-center justify-between border-b border-border p-4">
-              <div>
-                <h2 className="font-semibold">Chat with repository</h2>
-                <p className="text-xs text-muted-foreground">Ask questions about this codebase</p>
-              </div>
-              <Button variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label="Close chat">
-                <X className="h-4 w-4" />
-              </Button>
-            </header>
+            <header className="border-b border-border p-3">
+  <div className="flex items-start justify-between">
+    <div>
+      <h2 className="font-semibold">Ask Beacon</h2>
+      <p className="text-sm text-muted-foreground">
+        Chat with Beacon about this repository. Ask anything, and
+        Beacon will illuminate every corner of your codebase.
+      </p>
+    </div>
+
+<Button
+  variant="ghost"
+  size="icon"
+  className="h-7 w-13 rounded-sm hover:bg-accent"
+  onClick={() => setOpen(false)}
+  aria-label="Close chat"
+>
+  <X className="h-4 w-4" />
+</Button>
+  </div>
+</header>
 
             <div ref={scrollRef} className="flex-1 overflow-y-auto">
               <div className="p-4 space-y-4">
@@ -104,7 +117,7 @@ export function ChatSidebar({ repositoryId }: Props) {
                 ))}
                 {sending && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Loader2 className="h-4 w-4 animate-spin" /> Thinking…
+                    <Loader2 className="h-4 w-4 animate-spin" /> Exploring the codebase…
                   </div>
                 )}
               </div>

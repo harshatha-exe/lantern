@@ -29,7 +29,7 @@ function Profile() {
           </div>
         </div>
         <p className="text-xs text-muted-foreground">
-          More profile details will appear here once the backend exposes a user endpoint.
+          More profile details coming soon.
         </p>
       </div>
     </AppLayout>

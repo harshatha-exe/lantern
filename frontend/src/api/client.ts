@@ -38,9 +38,13 @@ export function setUnauthorizedHandler(handler: (() => void) | null) {
 apiClient.interceptors.response.use(
   (res) => res,
   (error: AxiosError) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      console.warn("Token expired or invalid. Logging out...");
       setStoredToken(null);
       onUnauthorized?.();
+      if (typeof window !== "undefined" && !window.location.pathname.includes('/login')) {
+          window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   },

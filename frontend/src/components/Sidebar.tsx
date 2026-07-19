@@ -1,10 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, User, Settings, HelpCircle, LogOut, Sparkles, Menu, X } from "lucide-react";
+import { LayoutDashboard, User, Settings, HelpCircle, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
+import icon from "./lantern.png";
 
 const items = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -19,8 +20,8 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <nav className="flex h-full flex-col gap-1 p-3">
       <Link to="/" className="flex items-center gap-2 px-3 py-4" onClick={onNavigate}>
-        <div className="gradient-bg flex h-8 w-8 items-center justify-center rounded-lg">
-          <Sparkles className="h-4 w-4 text-primary-foreground" />
+        <div className=" flex h-15 w-15 items-center justify-center rounded-lg">
+          <img src={icon} alt="" className="h-12 w-17 object-fill" />
         </div>
         <span className="font-semibold tracking-tight">Lantern</span>
       </Link>

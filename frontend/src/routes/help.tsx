@@ -4,15 +4,15 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const faqs = [
   { q: "How do I analyze a repository?", a: "Click Upload on the dashboard and paste a GitHub URL or drop a ZIP file." },
-  { q: "Is my code stored?", a: "Repositories are processed by the backend you connect to. See your backend's data policy for details." },
-  { q: "What file types are supported for upload?", a: "Currently only .zip archives are accepted for direct upload." },
+  { q: "Is my code stored?", a: "Repositories are processed to power features like summaries, documentation, and Beacon chat, while keeping your data secure and accessible only to you. When you delete the repository from the dashboard, the analysis, code and all associated data are permanently deleted." },
+  { q: "What file types are supported for upload?", a: "Only .zip archives with a maximum size of 500 KB are accepted for direct upload." },
   { q: "Why is my repository still processing?", a: "Analysis runs asynchronously on the backend. The page will refresh automatically when complete." },
-  { q: "Can I chat with my repository?", a: "Yes — open any repository and use the floating chat button on the bottom-right." },
+  { q: "Can I chat with my repository?", a: "Yes, open any repository and use the floating button on the bottom-right to chat." },
 ];
 
 export const Route = createFileRoute("/help")({
   ssr: false,
-  head: () => ({ meta: [{ title: "Help & FAQ — Lantern" }] }),
+  head: () => ({ meta: [{ title: "Help & FAQ - Lantern" }] }),
   component: Help,
 });
 
@@ -34,6 +34,8 @@ function Help() {
             ))}
           </Accordion>
         </div>
+        <p  className="mt-20 text-sm text-muted-foreground"> Still lost in the dark? Reach out to us for help {" "}  
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=harshatharithika@gmail.com"><u>here</u></a>.</p>
       </div>
     </AppLayout>
   );

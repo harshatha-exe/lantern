@@ -81,7 +81,12 @@ export function UploadDialog({ open, onOpenChange }: Props) {
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Upload Repository</DialogTitle>
-          <DialogDescription>Analyze a GitHub repo or upload a ZIP archive.</DialogDescription>
+          <DialogDescription>
+            <p>Analyze a GitHub repo or upload a ZIP archive. Max repo size: 500KB.</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Pro Tip: If you are analyzing a large full-stack repository, try analyzing it in pieces. Download just the frontend or backend folder as a ZIP file and upload it.
+            </p>
+          </DialogDescription>
         </DialogHeader>
 
         <Tabs value={tab} onValueChange={(v) => setTab(v as "github" | "zip")} className="mt-2">
