@@ -47,7 +47,7 @@ Ultimately, Lantern seeks to answer a single question:
 
 ---
 
-## ✨ Features
+## Features
 
 ### Automated Codebase Analysis
 
@@ -82,7 +82,7 @@ Handles repository ZIP uploads through an asynchronous analysis pipeline. Featur
 
 ---
 
-## 🏗️ Architecture & Implementation
+## Architecture & Implementation
 
 Lantern is built on a decoupled, asynchronous architecture designed to handle computationally heavy AI workflows on constrained cloud environments without dropping requests or running out of memory.
 
@@ -193,7 +193,7 @@ Repository      Analysis       Beacon (RAG)
 
 ---
 
-## 🔌 API Overview
+## API Overview
 
 The backend exposes unified controllers that handle the core lifecycle of a codebase analysis.
 
@@ -347,7 +347,7 @@ npm run dev
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 lantern/
