@@ -1,6 +1,6 @@
 # Lantern - Repository Analyzer
 
-> *The biggest barrier to contributing to open source isn't skill, but understanding an unfamiliar codebase.*
+*The biggest barrier to contributing to open source isn't skill, but understanding an unfamiliar codebase.*
 
 Lantern is an intelligent repository analysis and visualization tool. By uploading a compressed project archive or providing a GitHub link, developers can instantly generate automated documentation, map folder structures, detect tech stacks, and interact with their codebase using Beacon, a RAG-enabled AI assistant.
 
@@ -132,34 +132,9 @@ Beacon responds strictly using the injected context, eliminating AI hallucinatio
 
 ---
 
-## System Architecture
+## Architecture Diagram
 
-```text
-                    User
-                     |
-                     v
-             React Frontend
-                     |
-                     v
-          Spring Boot REST API
-                     |
-      --------------------------------
-      |              |              |
-      v              v              v
-Repository      Analysis       Beacon (RAG)
- Ingestion       Engine           Engine
-      |              |              |
-      --------------------------------
-                     |
-                     v
-               PostgreSQL
-                 + pgvector
-                     |
-                     v
-             External AI APIs
-       (Gemini, Jina, Groq)
-```
-
+![Architecture Diagram](./assets/architectureDiagram.png)
 ---
 
 ## Tech Stack
@@ -179,7 +154,7 @@ Repository      Analysis       Beacon (RAG)
 
 ### AI Capabilities
 
-* Analysis Engine: Google Gemini (Generates summaries, READMEs, and structure maps)
+* Analysis Engine: Google Gemini (Generates summaries, READMEs, and structure analysis)
 * Embedding Engine: Jina AI (jina-embeddings-v3)
 * Chat Engine (Beacon): Groq API (Llama-3)
 
@@ -195,21 +170,21 @@ Repository      Analysis       Beacon (RAG)
 
 ## API Overview
 
-The backend exposes unified controllers that handle the core lifecycle of a codebase analysis.
+| Endpoint                           | Method | Description                                                                 |
+|------------------------------------|--------|-----------------------------------------------------------------------------|
+| `/api/v1/auth/register`            | POST   | Registers a new user and returns a JWT token.                               |
+| `/api/v1/auth/login`               | POST   | Authenticates an existing user and returns a JWT token.                     |
+| `/api/v1/repositories`             | GET    | Returns all repositories associated with the authenticated user.            |
+| `/api/v1/repositories`             | POST   | Accepts a GitHub repository URL and initiates the analysis pipeline.        |
+| `/api/v1/repositories/upload-zip`  | POST   | Uploads a ZIP archive for repository analysis.                              |
+| `/api/v1/repositories/{id}`        | GET    | Retrieves repository metadata, status, and analysis results.                |
+| `/api/v1/repositories/{id}`        | DELETE | Deletes a repository and its associated analysis data.                      |
+| `/api/v1/repositories/{id}/chat`   | POST   | Sends a query to Beacon and returns a repository-aware response using RAG.  |
 
-| Endpoint                           | Method | Description                                                               |
-| ---------------------------------- | ------ | ------------------------------------------------------------------------- |
-| `/api/v1/repositories/upload`      | POST   | Accepts a repository ZIP and initiates the async analysis pipeline.       |
-| `/api/v1/repositories/{id}/status` | GET    | Polling endpoint for the frontend to check the async pipeline status.     |
-| `/api/v1/repositories/{id}`        | GET    | Returns the complete analysis (Tree, Tech Stack, generated README, etc.). |
-| `/api/v1/chat/{id}`                | POST   | Submits a query to Beacon and returns the RAG-assisted answer.            |
+### Live API Documentation
 
----
-
-## Live API Documentation
-
-* Swagger UI: https://repo-analyzer.onrender.com/swagger-ui/index.html
-* OpenAPI Spec: https://repo-analyzer.onrender.com/v3/api-docs
+* Swagger UI: [https://repo-analyzer.onrender.com/swagger-ui/index.html](https://lantern-vtnq.onrender.com/swagger-ui/index.html)
+* OpenAPI Spec: [https://repo-analyzer.onrender.com/v3/api-docs](https://lantern-vtnq.onrender.com/v3/api-docs)
 
 ---
 
@@ -270,7 +245,7 @@ Lantern implements several safeguards to ensure reliability and safe repository 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/lantern.git
+git clone https://github.com/harshatha-exe/lantern.git
 cd lantern
 ```
 
@@ -294,16 +269,16 @@ Run the backend:
 
 ```bash
 cd backend
-mvn clean package -DskipTests
-java -jar target/lantern-0.0.1-SNAPSHOT.jar
+mvn spring-boot:run
 ```
+Backend will start running  on http://localhost:8080.
 
 ### 3. Frontend Setup
 
 Create a `.env` file in the frontend directory:
 
 ```env
-VITE_API_URL=http://localhost:8080
+VITE_API_URL=http://localhost:8081
 ```
 
 Run the frontend client:
@@ -313,7 +288,7 @@ cd frontend
 npm install
 npm run dev
 ```
-
+Frontend will start running on http://localhost:8081.
 ---
 
 ## Roadmap
@@ -392,21 +367,6 @@ This project is licensed under the MIT License.
 
 ---
 
-## Acknowledgements
-
-Lantern stands on the shoulders of several excellent tools and communities:
-
-* Spring Boot
-* React
-* PostgreSQL
-* Supabase
-* JGit
-* Google Gemini
-* Jina AI
-* Groq
-
----
-
 Built by **Harshatha Rithika**.
 
-> *Understanding a codebase shouldn't be harder than building one.*
+*Understanding a codebase shouldn't be harder than building one.*
