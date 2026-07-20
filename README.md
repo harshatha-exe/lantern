@@ -1,4 +1,4 @@
-# Lantern - Repoitory Analyzer
+# Lantern - Repository Analyzer
 
 > *The biggest barrier to contributing to open source isn't skill, but understanding an unfamiliar codebase.*
 
@@ -344,7 +344,6 @@ npm run dev
 * [ ] Contributor onboarding assistant
 * [ ] Good first issue generation
 * [ ] Multi-repository comparison
-* [ ] Team knowledge base support
 
 ---
 
@@ -354,19 +353,26 @@ npm run dev
 lantern/
 │
 ├── backend/
-│   ├── controller/
-│   ├── service/
-│   ├── repository/
-│   ├── entity/
-│   ├── dto/
-│   ├── analysis/
-│   └── config/
+|   ├── src/main/java/com/harshatha/repo_analyzer
+|       ├── config/
+│       ├── controller/
+│       ├── service/
+│       ├── repository/
+│       ├── entity/
+│       ├── dto/
+│       ├── security/
+|       ├── service/
+|       ├── RepoAnalyzerApplication.java
+│       └── config/
 │
 ├── frontend/
-│   ├── components/
-│   ├── pages/
-│   ├── services/
-│   └── hooks/
+│   ├── src/
+│       ├── api/
+│       ├── components/
+│       ├── contexts/
+│       ├── layouts/
+│       ├── routes/
+│       └── hooks/
 │
 ├── docs/
 │   ├── requirements.md
