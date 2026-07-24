@@ -1,3 +1,4 @@
+replacements.txt
 .env
 *.env
 application-secret.yml
