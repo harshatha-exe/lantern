@@ -43,7 +43,7 @@ public class GroqChatService {
             """ + contextBuilder.toString();
 
         Map<String, Object> requestBody = Map.of(
-            "model", "llama-3.1-8b-instant", 
+            "model", "openai/gpt-oss-20b", 
             "messages", List.of(
                 Map.of("role", "system", "content", systemInstructions),
                 Map.of("role", "user", "content", userQuestion)
